@@ -75,25 +75,7 @@ function saveProfile(){
   renderProfileToForm();
   toast('Perfil guardado');
 }
-// --- Botón cerrar sesión ---
-document.getElementById("btnCerrarSesion").addEventListener("click", function () {
 
-    // Eliminar datos del usuario guardados
-    localStorage.removeItem("usuarioNombre");
-    localStorage.removeItem("usuarioCorreo");
-    localStorage.removeItem("usuarioID");
-
-    // Cambiar textos de perfil a "Invitado"
-    document.getElementById("miniUser").textContent = "Invitado";
-
-    // Mostrar pantalla de login
-    document.getElementById("loginScreen").classList.remove("hidden");
-
-    // Ocultar la app
-    document.getElementById("app").classList.add("hidden");
-
-    alert("Sesión cerrada correctamente.");
-});
 
 /* ---------- Partidos (calendario) ---------- */
 function renderPartidos(){
@@ -250,6 +232,24 @@ function wireUI(){
   // login/register tabs
   $('tabLogin').onclick = ()=>{ $('loginForm').classList.remove('hidden'); $('registerForm').classList.add('hidden'); $('tabLogin').classList.add('active'); $('tabRegister').classList.remove('active'); };
   $('tabRegister').onclick = ()=>{ $('registerForm').classList.remove('hidden'); $('loginForm').classList.add('hidden'); $('tabRegister').classList.add('active'); $('tabLogin').classList.remove('active'); };
+// === Botón Cerrar sesión ===
+$('btnCerrarSesion').onclick = () => {
+    // Animación de salida
+    $('app').classList.add('fadeOut');
+    setTimeout(() => {
+        // Borrar datos del usuario
+        DB = { perfil: null, partidos: [], reservas: [], chats: [] };
+        saveDB();
+        // Reset UI
+        $('miniUser').textContent = "Invitado";
+        // Ocultar app y mostrar login
+        $('app').classList.add('hidden');
+        $('login').classList.remove('hidden');
+        // Quitar animación para el futuro
+        $('app').classList.remove('fadeOut');
+        toast("Sesión cerrada");
+    }, 500);
+};
 
   // auth
   $('loginBtn').onclick = ()=> {

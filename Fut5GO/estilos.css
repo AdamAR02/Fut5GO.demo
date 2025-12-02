@@ -9,28 +9,101 @@
 
 /* GLOBAL */
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter, Arial, sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+body{
+  margin:0;
+  font-family:Inter, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+}
 .hidden{display:none}
 
 /* SPLASH */
-.splash-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:40;background:linear-gradient(135deg,#07130a,#0b2414)}
-.splash-box{text-align:center;padding:36px;border-radius:18px;backdrop-filter: blur(6px);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
-.splash-logo{width:96px;height:96px;display:block;margin:6px auto}
-.splash-box h1{color:var(--green);margin:8px 0;font-size:28px}
+.splash-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+  background:linear-gradient(135deg,#07130a,#0b2414)
+}
+.splash-box{
+  text-align:center;
+  padding:36px;
+  border-radius:18px;
+  backdrop-filter: blur(6px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6)
+}
+.splash-logo{
+  width:96px;
+  height:96px;
+  display:block;
+  margin:6px auto
+}
+.splash-box h1{
+  color:var(--green);
+  margin:8px 0;
+  font-size:28px
+}
 .muted{color:var(--muted)}
 
 /* APP LAYOUT */
-#app{display:flex;height:100vh}
-.sidebar{width:260px;padding:18px;background:linear-gradient(180deg,#07160d,#06130b);display:flex;flex-direction:column;gap:18px}
+#app{
+  display:flex;
+  height:100vh;
+  opacity:1;
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+/* Animación cuando se cierra sesión */
+.app-exit{
+  opacity:0;
+  transform: scale(0.94);
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  padding:18px;
+  background:linear-gradient(180deg,#07160d,#06130b);
+  display:flex;
+  flex-direction:column;
+  gap:18px
+}
 .brandWrap{display:flex;gap:12px;align-items:center}
-.logoSmall{width:48px;height:48px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800}
+.logoSmall{
+  width:48px;height:48px;border-radius:10px;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;font-weight:800
+}
 .brandTitle{font-weight:800}
 .brandSub{font-size:13px;color:var(--muted)}
 .menu{display:flex;flex-direction:column;gap:8px}
-.menuBtn{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--white);text-align:left;cursor:pointer;transition:all .15s}
-.menuBtn:hover{background:rgba(20,90,50,0.08);transform:translateY(-2px)}
-.highlight{background:linear-gradient(90deg,#c7e8c4,#a6dba6);color:#0b0b0b;font-weight:700}
-.sidebarFooter{margin-top:auto;color:rgba(255,255,255,0.35);font-size:12px}
+.menuBtn{
+  padding:12px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.03);
+  background:transparent;
+  color:var(--white);
+  text-align:left;
+  cursor:pointer;
+  transition:all .15s
+}
+.menuBtn:hover{
+  background:rgba(20,90,50,0.08);
+  transform:translateY(-2px)
+}
+.highlight{
+  background:linear-gradient(90deg,#c7e8c4,#a6dba6);
+  color:#0b0b0b;font-weight:700
+}
+.sidebarFooter{
+  margin-top:auto;
+  color:rgba(255,255,255,0.35);
+  font-size:12px
+}
+
+/* BOTÓN DE CERRAR SESIÓN */
 .logoutBtn {
   margin-top: 25px;
   padding: 10px 20px;
@@ -41,12 +114,12 @@ body{margin:0;font-family:Inter, Arial, sans-serif;background:var(--bg);color:va
   cursor: pointer;
   font-size: 15px;
   font-weight: bold;
-  width: 100px;
+  width: 120px;
   display: block;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .logoutBtn:hover {
@@ -54,19 +127,16 @@ body{margin:0;font-family:Inter, Arial, sans-serif;background:var(--bg);color:va
 }
 
 .logoutBtn:active {
-  transform: scale(0.97);
-}
-.fadeButton {
-  opacity: 1;
-  transition: opacity .3s ease, transform .3s ease;
+  transform: scale(0.94);
 }
 
-.fadeButton:active {
-  opacity: 0.4;
-  transform: scale(0.95);
+/* Botón desaparece suavemente cuando se cierra sesión */
+.logout-fade {
+  opacity: 0;
+  transition: opacity .3s ease;
 }
 
-/* Animación de pantallas */
+/* Animación de aparición de pantallas */
 .fadeScreen {
   animation: fadeIn .4s ease;
 }
@@ -76,22 +146,38 @@ body{margin:0;font-family:Inter, Arial, sans-serif;background:var(--bg);color:va
   to { opacity: 1; transform: translateY(0); }
 }
 
-
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px;background:linear-gradient(90deg,#07130a,#0b1a10);border-bottom:1px solid rgba(255,255,255,0.02)}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px;
+  background:linear-gradient(90deg,#07130a,#0b1a10);
+  border-bottom:1px solid rgba(255,255,255,0.02)
+}
 .title{font-weight:700}
 .content{padding:20px;overflow:auto}
 
 /* CARD / PANES */
-.card{background:linear-gradient(180deg,#08130b,#07110a);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.card{
+  background:linear-gradient(180deg,#08130b,#07110a);
+  padding:18px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.03)
+}
 .screenPage{min-height:260px}
 .form-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .stack{display:flex;flex-direction:column;gap:10px}
 .row{display:flex;gap:10px;align-items:center}
 
 /* INPUTS & BUTTONS */
-input, select, textarea{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white)}
+input, select, textarea{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:transparent;color:var(--white)
+}
 .btn{padding:10px 12px;border-radius:10px;border:0;cursor:pointer}
 .btn.primary{background:var(--green);color:var(--white)}
 .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
@@ -102,8 +188,15 @@ input, select, textarea{padding:10px;border-radius:10px;border:1px solid rgba(25
 .chatItem{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
 .chatWindow{display:flex;flex-direction:column;gap:8px}
 .chatTitle{font-weight:700}
-.chatMessages{height:260px;overflow:auto;padding:8px;background:linear-gradient(180deg,#051009,#07110a);border-radius:8px}
-.chatMessages .msg{padding:6px;border-radius:6px;margin-bottom:6px;background:rgba(255,255,255,0.03)}
+.chatMessages{
+  height:260px;overflow:auto;padding:8px;
+  background:linear-gradient(180deg,#051009,#07110a);
+  border-radius:8px
+}
+.chatMessages .msg{
+  padding:6px;border-radius:6px;margin-bottom:6px;
+  background:rgba(255,255,255,0.03)
+}
 
 /* MAP */
 .mapBox{height:260px;border-radius:8px;overflow:hidden;}
@@ -114,13 +207,66 @@ input, select, textarea{padding:10px;border-radius:10px;border:1px solid rgba(25
 .modal{background:var(--card);padding:16px;border-radius:12px;pointer-events:auto}
 
 /* TOASTS */
-.toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60}
-.toast{background:#153f26;color:white;padding:10px 14px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.4);font-weight:600;opacity:0;transform:translateY(8px);animation:toastIn .28s forwards}
-@keyframes toastIn{to{opacity:1;transform:translateY(0)}}
+.toasts{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:60
+}
+.toast{
+  background:#153f26;color:white;
+  padding:10px 14px;border-radius:8px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.4);
+  font-weight:600;
+  opacity:0;
+  transform:translateY(8px);
+  animation:toastIn .28s forwards
+}
+@keyframes toastIn{
+  to{opacity:1;transform:translateY(0)}
+}
 
 /* RESPONSIVE */
 @media(max-width:900px){
   .sidebar{display:none}
   #app{flex-direction:column}
   .content{padding:12px}
+}
+/* ===== Auth cards (login / register separadas) ===== */
+.screen {
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.screen.hidden { display: none; }
+.screen.active { display: flex; }
+
+.auth-card {
+  width: 340px;
+  max-width: 92%;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.auth-card h2 { margin-bottom: 12px; color: var(--green); }
+.auth-card input { width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); background: transparent; color: var(--white); }
+
+.linkText { color: var(--green); font-weight:600; text-decoration:underline; cursor:pointer; }
+
+/* fade/exit para animación al cerrar sesión */
+.fadeOut {
+  animation: fadeOut 0.45s ease forwards;
+}
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.96); }
 }
