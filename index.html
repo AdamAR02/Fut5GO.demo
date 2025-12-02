@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fútbol5Go</title>
+
+  <!-- Leaflet (mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+4g0gYbM4gH0v3x0tXb2jQb4QY2vY3Zf2k8o0mQmM=" crossorigin=""/>
+
+  <link rel="stylesheet" href="estilos.css" />
+  <link rel="icon" type="image/png" href="imagenes/Logo simple.png" />
+  <link rel="icon" type="image/jpg" href="imagenes/Logo simple.png">
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash" class="splash-screen">
+    <div class="splash-box">
+      <svg class="splash-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="100" height="100" rx="14" fill="#145a32"/>
+        <text x="50" y="58" font-size="30" fill="#fff" text-anchor="middle">5GO</text>
+      </svg>
+      <h1>Futbol5Go</h1>
+      <p class="muted">Organiza · Juega · Conecta</p>
+    </div>
+  </div>
+
+  <!-- LOGIN / REGISTER -->
+  <div id="login" class="screen hidden">
+    <div class="card auth-card">
+      <div class="tabs">
+        <button id="tabLogin" class="tab active">Iniciar sesión</button>
+        <button id="tabRegister" class="tab">Registrarse</button>
+      </div>
+
+      <form id="loginForm" class="form">
+        <input id="loginName" placeholder="Nombre" autocomplete="off" />
+        <input id="loginPass" type="password" placeholder="Contraseña (demo)" />
+        <div class="row">
+          <button type="button" id="loginBtn" class="btn primary">Entrar</button>
+          <button type="button" id="guestBtn" class="btn ghost">Invitado</button>
+        </div>
+      </form>
+
+      <form id="registerForm" class="form hidden">
+        <input id="regName" placeholder="Nombre" autocomplete="off" />
+        <input id="regEmail" type="email" placeholder="Correo electrónico" />
+        <input id="regPass" type="password" placeholder="Contraseña" />
+        <div class="row">
+          <button type="button" id="regBtn" class="btn primary">Crear cuenta</button>
+          <button type="button" id="toLogin" class="btn ghost">Volver</button>
+        </div>
+      </form>
+
+      <div class="socials">
+        <button class="icon-btn" title="Google"><span>G</span></button>
+        <button class="icon-btn" title="Facebook"><span>f</span></button>
+        <button class="icon-btn" title="Apple"><span></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+
+    <!-- sidebar -->
+    <aside class="sidebar">
+      <div class="brandWrap">
+        <img src="imagenes/Fut5GO.jpg" width="120" alt="Logo">
+        <div>
+          <div class="brandTitle">FUT5GO</div>
+          <div class="brandSub" id="miniUser">Invitado</div>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <button id="btnMenuPerfil" class="menuBtn">Perfil</button>
+        <button id="btnMenuCalendario" class="menuBtn">Calendarios y Retos</button>
+        <button id="btnMenuCanchas" class="menuBtn">Canchas Cerca</button>
+        <button id="btnMenuChat" class="menuBtn">Chat</button>
+        <button id="btnMenuApartar" class="menuBtn highlight">Apartar Cancha</button>
+      </nav>
+
+      <div class="sidebarFooter">v1.0</div>
+    </aside>
+
+    <!-- main -->
+    <main class="main">
+      <header class="topbar">
+        <div class="title">⚽ Fútbol5Go</div>
+        <div class="userInfo">
+          <span id="userHeader">Invitado</span>
+        </div>
+      </header>
+
+      <section class="content">
+
+        <!-- PERFIL -->
+        <article id="screen-perfil" class="screenPage hidden card">
+          <h2>Perfil</h2>
+          <div class="form-grid">
+            <input id="p_nombre" placeholder="Nombre" />
+            <input id="p_edad" type="number" placeholder="Edad" />
+            <input id="p_posicion" placeholder="Posición" />
+            <select id="p_nivel">
+              <option value="1">★</option>
+              <option value="2">★★</option>
+              <option value="3">★★★</option>
+              <option value="4">★★★★</option>
+              <option value="5">★★★★★</option>
+            </select>
+
+            <button id="saveProfile" class="btn primary">Guardar Perfil</button>
+            <button class="btn ghost backMenu">Volver al menú</button>
+          </div>
+
+          <!-- Botón cerrar sesión -->
+          <button id="btnCerrarSesion" class="logoutBtn">Cerrar sesión</button>
+        </article>
+
+        <!-- CALENDARIO -->
+        <article id="screen-calendario" class="screenPage hidden card">
+          <h2>Calendarios y Retos</h2>
+          <div class="stack">
+            <button id="openCreateMatch" class="btn primary">Crear Partido</button>
+            <div id="matchesList"></div>
+            <button class="btn ghost backMenu">Volver al menú</button>
+          </div>
+        </article>
+
+        <!-- CANCHAS / MAPA -->
+        <article id="screen-canchas" class="screenPage hidden card">
+          <h2>Canchas Cerca</h2>
+          <div id="map" class="mapBox">Cargando mapa...</div>
+          <div class="row">
+            <button id="refreshMap" class="btn">Refrescar mapa</button>
+            <button class="btn ghost backMenu">Volver al menú</button>
+          </div>
+        </article>
+
+        <!-- CHAT -->
+        <article id="screen-chat" class="screenPage hidden card">
+          <h2>Chat</h2>
+          <div class="chatWrap">
+            <div id="chatsList" class="chatsList"></div>
+            <div id="chatWindow" class="chatWindow hidden">
+              <div id="chatTitle" class="chatTitle"></div>
+              <div id="chatMessages" class="chatMessages"></div>
+              <div class="chatInput">
+                <input id="chatMsgInput" placeholder="Escribe un mensaje..." />
+                <button id="chatSendBtn" class="btn">Enviar</button>
+              </div>
+            </div>
+            <div class="row">
+              <button id="createChatBtn" class="btn">Crear Grupo</button>
+              <button class="btn ghost backMenu">Volver al menú</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- APARTAR -->
+        <article id="screen-apartar" class="screenPage hidden card">
+          <h2>Apartar Cancha</h2>
+          <div class="form-grid">
+            <input id="r_cancha" placeholder="Nombre/Cancha" />
+            <input id="r_fecha" type="date" />
+            <input id="r_hora" type="time" />
+            <button id="createReserva" class="btn primary">Reservar</button>
+            <div id="reservasList" class="stack"></div>
+            <button class="btn ghost backMenu">Volver al menú</button>
+          </div>
+        </article>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL ROOT -->
+  <div id="modalRoot"></div>
+
+  <!-- TOASTS -->
+  <div id="toasts" class="toasts"></div>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j8k2DkG4G6P5Q2b9pGk6o6m1wX0x5b1z9g1o0+E=" crossorigin=""></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
